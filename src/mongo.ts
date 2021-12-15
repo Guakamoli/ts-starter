@@ -3,8 +3,8 @@ import { MongoClient, Db } from 'mongodb';
 export { MongoClient, Db };
 
 const mongoOpts = {
-  minPoolSize: 3,
-  maxPoolSize: 10,
+  minPoolSize: 2,
+  maxPoolSize: 5,
   directConnection: true,
 };
 
