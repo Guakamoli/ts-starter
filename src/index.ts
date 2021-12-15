@@ -15,7 +15,7 @@ async function runApp() {
   http.start(withContext(ctx));
 }
 
-if (config.HTTP_ENABLE) {
+if (!config.isTest && config.HTTP_ENABLE) {
   runApp().catch(console.error);
 }
 
