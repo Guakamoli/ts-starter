@@ -18,5 +18,5 @@
 PORT=8080
 HTTP_ENABLE=true
 MONGO_ENABLE=true
-MONGO_URL=mongodb://localhost:27017/example?authSource=admin
+MONGO_URL=mongodb://localhost:27017/example
 ```

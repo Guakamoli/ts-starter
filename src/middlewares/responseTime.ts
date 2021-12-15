@@ -1,7 +1,7 @@
-import Koa, { Middleware } from 'koa';
+import { Context, Next, Middleware } from 'koa';
 
 export default function responseTime(): Middleware {
-  return async (ctx: Koa.Context, next: Koa.Next): Promise<any> => {
+  return async (ctx: Context, next: Next): Promise<any> => {
     const start = Date.now();
     await next();
     const ms = Date.now() - start;

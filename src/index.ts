@@ -1,20 +1,21 @@
 import { Http, Context, withContext } from './http';
 import routes from './routes';
 import { connect, Db } from './mongo';
+import config from './config';
 
 async function runApp() {
   const ctx = Context();
 
-  if (Boolean(process.env.MONGO_ENABLE)) {
-    ctx.db = (await connect(process.env.MONGO_URL || '')) as Db;
+  if (config.MONGO_ENABLE) {
+    ctx.db = (await connect(config.MONGO_URL)) as Db;
   }
 
-  const http = new Http(Number(process.env.PORT ?? 8080));
+  const http = new Http(config.PORT);
   http.withRouter(routes);
   http.start(withContext(ctx));
 }
 
-if (process.env.HTTP_ENABLE) {
+if (config.HTTP_ENABLE) {
   runApp().catch(console.error);
 }
 

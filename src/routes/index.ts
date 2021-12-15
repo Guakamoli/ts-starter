@@ -1,17 +1,15 @@
 import { Context } from 'koa';
 import Router from '@koa/router';
 
-const router = new Router({
-  prefix: '/',
-});
+const router = new Router();
 
-router.get('/', async (ctx: Context) => {
-  ctx.body = 'hello world ☺️';
+router.get('/', (ctx: Context) => {
+  ctx.body = 'hello world 🤪';
 });
 
 /** k8s 检查 */
 // 存活检查
-router.get('/ping', async (ctx: Context) => {
+router.get('/ping', (ctx: Context) => {
   ctx.body = 'pong';
 });
 // 就绪检查
