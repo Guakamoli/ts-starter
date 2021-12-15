@@ -1,31 +1,22 @@
-import { Http } from './http';
+import { Http, Context, withContext } from './http';
 import routes from './routes';
-// import { connect, Db } from './mongo'; // mongodb 例子使用
+import { connect, Db } from './mongo';
 
-async function main() {
+async function runApp() {
+  const ctx = Context();
+
+  if (Boolean(process.env.MONGO_ENABLE)) {
+    ctx.db = (await connect(process.env.MONGO_URL || '')) as Db;
+  }
+
   const http = new Http(Number(process.env.PORT ?? 8080));
-
   http.withRouter(routes);
-  await http.start({});
+  http.start(withContext(ctx));
 }
 
-main().catch(console.error);
+if (process.env.HTTP_ENABLE) {
+  runApp().catch(console.error);
+}
 
-// 需要 mongodb 的例子
-// async function main(Db: Db) {
-//   const http = new Http(Number(process.env.PORT ?? 8080));
-
-//   const context = {
-//     Db,
-//     collection: (tableName: string) => {
-//       return Db.collection(tableName);
-//     },
-//   };
-
-//   http.withRouter(routes);
-//   await http.start(context);
-// }
-
-// connect(process.env.MONGO_URL || '')
-//   .then((db) => main(db as Db))
-//   .catch(console.error);
+// 这是给测试用的
+export const foo = '芜湖~';

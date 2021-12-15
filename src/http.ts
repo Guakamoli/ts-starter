@@ -1,6 +1,6 @@
 import Koa from 'koa';
 import Router from '@koa/router';
-import { HttpContext } from './interface';
+import { BaseContext } from './interface';
 import { logger, responseTime } from './middlewares';
 
 export class Http {
@@ -27,12 +27,33 @@ export class Http {
     });
   }
 
-  async start({}: HttpContext) {
-    this.app.use(this.router.routes());
-    this.app.use(this.router.allowedMethods());
+  async start(context: BaseContext) {
+    Object.entries(context).forEach(([key, value]) => {
+      Object.defineProperty(this.app.context, key, {
+        value,
+        writable: false,
+      });
+    });
 
     this.app.listen(this.port, () => {
       console.log(`Listening on http://localhost:${this.port}`);
     });
   }
+}
+
+export function withContext(obj: object = {}) {
+  const ctx: BaseContext = {};
+
+  Object.entries(obj).forEach(([key, value]) => {
+    if (key === 'db') {
+      ctx['collection'] = (tableName: string) => value.collection(tableName);
+    }
+    ctx[key] = value;
+  });
+
+  return ctx;
+}
+
+export function Context() {
+  return {} as BaseContext;
 }
