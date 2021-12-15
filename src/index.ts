@@ -1,6 +1,6 @@
 import { Http } from './http';
 import routes from './routes';
-import { connect, Db } from './mongo';
+// import { connect, Db } from './mongo'; // mongodb 例子使用
 
 async function main() {
   const http = new Http(Number(process.env.PORT ?? 8080));
