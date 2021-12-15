@@ -16,6 +16,7 @@
   },
   "types": "./dist/index.d.ts",
   "scripts": {
+    "start": "npx pnpm run build-fast && node .",
     "build-fast": "tsup src/index.ts --format cjs,esm",
     "build": "npx pnpm run build-fast -- --dts-resolve",
     "test": "npx pnpm run build && uvu -r sucrase/register --ignore fixture",
@@ -23,10 +24,16 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "@types/koa": "^2.13.4",
     "prettier": "2.5.1",
     "sucrase": "3.20.3",
     "tsup": "5.11.1",
     "typescript": "4.5.3",
     "uvu": "0.5.2"
+  },
+  "dependencies": {
+    "@koa/router": "^10.1.1",
+    "koa": "^2.13.4",
+    "mongodb": "^4.2.2"
   }
 }
