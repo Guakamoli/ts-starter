@@ -25,6 +25,7 @@
   "license": "MIT",
   "devDependencies": {
     "@types/koa": "^2.13.4",
+    "@types/node": "^16.11.13",
     "prettier": "2.5.1",
     "sucrase": "3.20.3",
     "tsup": "5.11.1",
