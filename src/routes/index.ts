@@ -14,7 +14,7 @@ router.get('/ping', (ctx: Context) => {
 });
 // 就绪检查
 router.get('/healthz', async (ctx: Context) => {
-  if (ctx.hasOwnProperty('db')) {
+  if (ctx.db) {
     try {
       await ctx.db.collection('test').findOne({});
     } catch (err: any) {
