@@ -1,6 +1,6 @@
 import Koa from 'koa';
 import Router from '@koa/router';
-import { BaseContext } from './interface';
+import { BaseContext } from '../types';
 import compose from 'koa-compose';
 import {
   logger,
@@ -12,7 +12,7 @@ import {
   cors,
   json,
   cacheContrl,
-} from './middlewares';
+} from '../middlewares';
 
 export class Http {
   app: Koa;
@@ -68,21 +68,4 @@ export class Http {
       console.log(`Listening on http://localhost:${this.port}`);
     });
   }
-}
-
-export function withContext(obj: object = {}) {
-  const ctx: BaseContext = {};
-
-  Object.entries(obj).forEach(([key, value]) => {
-    if (key === 'db') {
-      ctx['collection'] = (tableName: string) => value.collection(tableName);
-    }
-    ctx[key] = value;
-  });
-
-  return ctx;
-}
-
-export function Context() {
-  return {} as BaseContext;
 }

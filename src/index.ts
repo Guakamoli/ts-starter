@@ -1,4 +1,5 @@
-import { Http, Context, withContext } from './http';
+import { Http } from './http';
+import { Context, withContext } from './http/context';
 import routes from './routes';
 import { connect, Db } from './mongo';
 import config from './config';
