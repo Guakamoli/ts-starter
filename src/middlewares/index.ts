@@ -19,3 +19,20 @@ export {
   json,
   cacheContrl,
 };
+
+export default [
+  custom(), // 自定义的中间件
+  logger(),
+  responseTime({
+    hrtime: true,
+  }),
+  body({
+    jsonLimit: '10mb',
+    formLimit: '100kb',
+    textLimit: '100kb',
+  }),
+  conditional(),
+  etag(),
+  cors(),
+  json({ pretty: false, param: 'x-json-pretty' }),
+];

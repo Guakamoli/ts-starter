@@ -2,17 +2,7 @@ import Koa from 'koa';
 import Router from '@koa/router';
 import { BaseContext } from '../types';
 import compose from 'koa-compose';
-import {
-  logger,
-  responseTime,
-  body,
-  conditional,
-  custom,
-  etag,
-  cors,
-  json,
-  cacheContrl,
-} from '../middlewares';
+import middlewares, { cacheContrl } from '../middlewares';
 
 export class Http {
   app: Koa;
@@ -29,23 +19,6 @@ export class Http {
       ctx.cacheControl(false);
       await next();
     });
-
-    const middlewares = [
-      custom(), // 自定义的中间件
-      logger(),
-      responseTime({
-        hrtime: true,
-      }),
-      body({
-        jsonLimit: '10mb',
-        formLimit: '100kb',
-        textLimit: '100kb',
-      }),
-      conditional(),
-      etag(),
-      cors(),
-      json({ pretty: false, param: 'x-json-pretty' }),
-    ];
     this.app.use(compose(middlewares)); // 合并中间件
   }
 
