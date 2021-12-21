@@ -13,6 +13,6 @@ export function withContext(obj: object = {}) {
   return ctx;
 }
 
-export function Context() {
-  return {} as BaseContext;
+export function Context(base: BaseContext = {}) {
+  return { ...base } as BaseContext;
 }

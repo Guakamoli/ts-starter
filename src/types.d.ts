@@ -7,3 +7,17 @@ export interface BaseContext extends Record<T> {
 }
 
 export type HttpMethod = 'all' | 'get' | 'post' | 'put' | 'del';
+
+export type MQOptions = {
+  accessKeyId: string;
+  accessKeySecret: string;
+  endpoint: string;
+  instanceId: string;
+  topicId: string;
+  groupId: string;
+};
+
+export type MPushOptions = {
+  accessKeyId: string;
+  accessKeySecret: string;
+};
