@@ -1,7 +1,5 @@
-import { Http } from './http';
-import { Context, withContext } from './http/context';
+import { Http, Context, withContext, connect, Db } from './mod';
 import routes from './routes';
-import { connect, Db } from './mongo';
 import config from './config';
 
 async function runApp() {
