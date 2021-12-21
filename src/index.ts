@@ -1,6 +1,7 @@
 import { Http, Context, withContext, connect, Db } from './mod';
 import routes from './routes';
 import config from './config';
+import startup from './startup';
 
 async function runApp() {
   const ctx = Context();
@@ -8,6 +9,8 @@ async function runApp() {
   if (config.MONGO_ENABLE) {
     ctx.db = (await connect(config.MONGO_URL)) as Db;
   }
+
+  await startup.run(ctx);
 
   const http = new Http(config.PORT);
   http.withRouter(routes);
