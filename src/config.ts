@@ -14,6 +14,7 @@ export default cleanEnv(
     HTTP_ENABLE: bool({ default: true, devDefault: true }),
     MONGO_ENABLE: bool({ default: false, devDefault: false }),
     MONGO_URL: str({
+      default: 'mongodb://localhost:27017/example',
       devDefault: 'mongodb://localhost:27017/example',
     }),
   },
