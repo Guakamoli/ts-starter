@@ -1,6 +1,7 @@
 import { Http, Context, withContext, connect, Db, startup } from './mod';
 import routes from './routes';
 import config from './config';
+import './startup';
 
 async function runApp() {
   const ctx = Context();

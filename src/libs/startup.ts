@@ -3,11 +3,6 @@ import { BaseContext } from '../types';
 function initStartup(this: any) {
   const startup = new Map();
 
-  // 默认的startup
-  startup.set('hello', () => {
-    console.log('hello world');
-  });
-
   this.run = async function (ctx: BaseContext) {
     for await (const [name, fn] of startup) {
       console.log(`Running startup function "${name}"`);
