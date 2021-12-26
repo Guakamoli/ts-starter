@@ -7,7 +7,7 @@ export function withContext(obj: object = {}) {
     if (key === 'mongo') {
       ctx.db = value.db();
       ctx.collection = (name: string, dbName?: string) => {
-        return dbName ? value.db(dbName).collection(name) : value.db();
+        return (dbName ? value.db(dbName) : value.db()).collection(name);
       };
     }
     ctx[key] = value;
