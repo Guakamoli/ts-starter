@@ -21,6 +21,9 @@ console.log(ctx);
 
 ## mq.ts
 
+> 使用前请 `pnpm add @aliyunmq/mq-http-sdk`
+> 在 `mod.ts` 中解开注释
+
 ```bash
 MQ_ACCESS_KEY_ID=CHANGEME
 MQ_ACCESS_KEY_SECRET=CHANGEME

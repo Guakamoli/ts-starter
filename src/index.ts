@@ -1,20 +1,33 @@
-import { Http, Context, withContext, connect, Db, startup } from './mod';
+import {
+  Http,
+  Context,
+  withContext,
+  connect,
+  MongoClient,
+  startup,
+} from './mod';
 import routes from './routes';
 import config from './config';
 import './startup';
 
 async function runApp() {
-  const ctx = Context();
+  let ctx = Context();
 
   if (config.MONGO_ENABLE) {
-    ctx.db = (await connect(config.MONGO_URL)) as Db;
+    ctx.mongo = (await connect(config.MONGO_URL)) as MongoClient;
   }
-
-  await startup.run(ctx);
 
   const http = new Http(config.PORT);
   http.withRouter(routes);
-  http.start(withContext(ctx));
+
+  ctx = withContext({
+    ...ctx,
+    http,
+  });
+
+  await startup.run(ctx);
+
+  http.start(ctx);
 }
 
 if (!config.isTest && config.HTTP_ENABLE) {

@@ -1,5 +1,4 @@
-import { Db, Collection, Document } from 'mongodb';
-import Koa from 'koa';
+import { Db, Collection, CollectionCreateOptions } from './mod';
 
 export interface BaseContext extends Record<T> {
   [key: string | number]: any;
@@ -20,4 +19,15 @@ export type MQOptions = {
 export type MPushOptions = {
   accessKeyId: string;
   accessKeySecret: string;
+};
+
+export type BaseCollectionIndexesItem = {
+  index: Record<string>;
+  options?: Record<string>;
+};
+
+export type BaseCollectionIndex = {
+  name: string;
+  options: CollectionCreateOptions;
+  indexes: BaseCollectionIndexesItem[];
 };

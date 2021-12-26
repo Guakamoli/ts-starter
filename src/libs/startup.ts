@@ -11,7 +11,15 @@ function initStartup(this: any) {
   };
 
   this.set = async function (name: string, callback: any) {
-    startup.set(name, callback);
+    if (!startup.has(name)) {
+      startup.set(name, callback);
+    } else {
+      console.warn(`A startup with the same name exists. name: "${name}"`);
+    }
+  };
+
+  this.clear = async function () {
+    startup.clear();
   };
 
   return this;
