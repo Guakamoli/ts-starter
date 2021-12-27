@@ -14,43 +14,43 @@ const collections: BaseCollectionIndex[] = [
   // },
 ];
 
-export default async (ctx: BaseContext) => {
-  const db = ctx.db as Db;
+const getCollectionPromise = (
+  db: Db,
+  collectionConfig: BaseCollectionIndex,
+) => {
+  return new Promise((resolve, reject) => {
+    db.collection(
+      collectionConfig.name,
+      { strict: true },
+      (error: any, collection: Collection) => {
+        if (error) {
+          db.createCollection(collectionConfig.name, collectionConfig.options)
+            .then((newCollection: Collection) => {
+              resolve(newCollection);
+            })
+            .catch(reject);
+        } else {
+          db.command({
+            collMod: collectionConfig.name,
+            ...collectionConfig.options,
+          })
+            .then(() => {
+              resolve(collection);
+            })
+            .catch(reject);
+        }
+      },
+    );
+  });
+};
 
+export default async function createCollections(ctx: BaseContext) {
   for (const collectionConfig of collections) {
-    const getCollectionPromise = () => {
-      return new Promise((resolve, reject) => {
-        db.collection(
-          collectionConfig.name,
-          { strict: true },
-          (error, collection) => {
-            if (error) {
-              db.createCollection(
-                collectionConfig.name,
-                collectionConfig.options,
-              )
-                .then((newCollection: Collection) => {
-                  resolve(newCollection);
-                  return null;
-                })
-                .catch(reject);
-            } else {
-              db.command({
-                collMod: collectionConfig.name,
-                ...collectionConfig.options,
-              })
-                .then(() => {
-                  resolve(collection);
-                  return null;
-                })
-                .catch(reject);
-            }
-          },
-        );
-      });
-    };
-
-    const collection = (await getCollectionPromise()) as Collection;
+    const db = ctx.db as Db;
+    const collection = (await getCollectionPromise(
+      db,
+      collectionConfig,
+    )) as Collection;
 
     if (Array.isArray(collectionConfig.indexes)) {
       const indexingPromises = collectionConfig.indexes.map((indexArgs: any) =>

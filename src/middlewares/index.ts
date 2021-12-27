@@ -9,11 +9,11 @@ import cacheContrl from 'koa-ctx-cache-control';
 import custom from './custom';
 
 export {
+  custom, // 自定义的中间件
   logger,
   responseTime,
   body,
   conditional,
-  custom,
   etag,
   cors,
   json,

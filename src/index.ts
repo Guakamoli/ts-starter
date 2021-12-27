@@ -13,7 +13,7 @@ import './startup';
 async function runApp() {
   let ctx = Context();
 
-  if (config.MONGO_ENABLE) {
+  if (config.MONGO_URL) {
     ctx.mongo = (await connect(config.MONGO_URL)) as MongoClient;
   }
 
