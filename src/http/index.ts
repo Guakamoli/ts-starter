@@ -4,13 +4,18 @@ import { BaseContext } from '../types';
 import compose from 'koa-compose';
 import middlewares, { cacheContrl } from '../middlewares';
 
+const PORT = 8080;
+const HOST = '0.0.0.0';
+
 export class Http {
   app: Koa;
 
   port: number;
+  hostname: string;
 
-  constructor(port = 8080) {
+  constructor(port = PORT, hostname = HOST) {
     this.port = port;
+    this.hostname = hostname;
 
     this.app = new Koa();
 
@@ -37,8 +42,8 @@ export class Http {
       });
     });
 
-    this.app.listen(this.port, () => {
-      console.log(`Listening on http://localhost:${this.port}`);
+    this.app.listen(this.port, this.hostname, () => {
+      console.log(`Listening on http://${this.hostname}:${this.port}`);
     });
   }
 }
