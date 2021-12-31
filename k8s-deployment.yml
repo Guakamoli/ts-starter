@@ -1,0 +1,59 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: develop
+  name: ts-starter-svc
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+      name: restful
+  selector:
+    component: ts-starter
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: develop
+  name: ts-starter-deployment
+  labels:
+    component: ts-starter
+spec:
+  selector:
+    matchLabels:
+      component: ts-starter
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        component: ts-starter
+    spec:
+      containers:
+        - name: ts-starter
+          image: ts-starter:latest # 修改为你的容器镜像点
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              name: restful
+          env:
+            - name: NODE_ENV
+              value: development
+            # 按需自己添加环境变量 可参考 .env.example
+          livenessProbe:
+            httpGet:
+              path: "/ping"
+              port: restful # 使用命名的端口
+            initialDelaySeconds: 5
+            failureThreshold: 2 # 连续探测失败2次才算成功
+            timeoutSeconds: 3
+            periodSeconds: 15
+          readinessProbe:
+            httpGet:
+              path: "/healthz"
+              port: restful
+            initialDelaySeconds: 30
+            timeoutSeconds: 3
+            periodSeconds: 3 # 探测频率3秒
+            successThreshold: 3 # 连续探测成功3次才算成功
