@@ -12,6 +12,7 @@ const mongoOpts = {
   minPoolSize: 2,
   maxPoolSize: 5,
   directConnection: true,
+  useUnifiedTopology: true,
 };
 
 /**

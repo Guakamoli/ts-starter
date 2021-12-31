@@ -12,10 +12,8 @@ export default cleanEnv(
     NODE_ENV: str({ choices: ['test', 'development', 'production', 'stag'] }),
     PORT: num({ default: 8080, devDefault: 8080 }),
     HTTP_ENABLE: bool({ default: true, devDefault: true }),
-    MONGO_ENABLE: bool({ default: false, devDefault: false }),
     MONGO_URL: str({
-      default: 'mongodb://localhost:27017/example',
-      devDefault: 'mongodb://localhost:27017/example',
+      example: 'mongodb://localhost:27017/example',
     }),
   },
 );

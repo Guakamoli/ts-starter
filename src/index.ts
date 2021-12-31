@@ -14,7 +14,9 @@ async function runApp() {
   let ctx = Context();
 
   if (config.MONGO_URL) {
-    ctx.mongo = (await connect(config.MONGO_URL)) as MongoClient;
+    const mongoOpts: Record<string, any> = {};
+    if (config.NODE_ENV === 'production') mongoOpts.directConnection = false;
+    ctx.mongo = (await connect(config.MONGO_URL, mongoOpts)) as MongoClient;
   }
 
   const http = new Http(config.PORT);
