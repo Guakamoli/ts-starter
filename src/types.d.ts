@@ -31,3 +31,17 @@ export type BaseCollectionIndex = {
   options: CollectionCreateOptions;
   indexes: BaseCollectionIndexesItem[];
 };
+
+export type ConnectionCursor = string;
+export type ConnectionLimitInt = number;
+
+export interface Pagination {
+  after?: ConnectionCursor;
+  before?: ConnectionCursor;
+  first?: ConnectionLimitInt;
+  last?: ConnectionLimitInt;
+  offset?: number;
+  sortOrder?: 'asc' | 'desc';
+  sortBy?: string;
+  query?: Record<string>;
+}

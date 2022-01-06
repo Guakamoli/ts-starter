@@ -1,3 +1,4 @@
+import config from '../config';
 import logger from 'koa-logger';
 import responseTime from 'koa-response-time';
 import body from 'koa-body';
@@ -6,10 +7,8 @@ import etag from 'koa-etag';
 import cors from '@koa/cors';
 import json from 'koa-json';
 import cacheContrl from 'koa-ctx-cache-control';
-import custom from './custom';
 
 export {
-  custom, // 自定义的中间件
   logger,
   responseTime,
   body,
@@ -20,9 +19,7 @@ export {
   cacheContrl,
 };
 
-export default [
-  custom(), // 自定义的中间件
-  logger(),
+const middlewares = [
   responseTime({
     hrtime: true,
   }),
@@ -36,3 +33,9 @@ export default [
   cors(),
   json({ pretty: false, param: 'x-json-pretty' }),
 ];
+
+if (!config.WORKER_ENABLE) {
+  middlewares.push(logger());
+}
+
+export default middlewares;

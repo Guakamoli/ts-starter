@@ -21,7 +21,7 @@ router.get('/healthz', async (ctx: Context) => {
       ctx.throw(500, err.message);
     }
   }
-  ctx.body = 'ok';
+  ctx.json({ message: 'ok' });
 });
 /** k8s 检查 */
 

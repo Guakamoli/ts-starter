@@ -53,7 +53,30 @@ spec:
             httpGet:
               path: "/healthz"
               port: restful
-            initialDelaySeconds: 30
+            initialDelaySeconds: 10
             timeoutSeconds: 3
-            periodSeconds: 3 # 探测频率3秒
+            periodSeconds: 15 # 探测频率15秒
             successThreshold: 3 # 连续探测成功3次才算成功
+        # 如果需要单独的 worker 来处理 startup
+        # - name: worker
+        #   image: ts-starter:latest
+        #   imagePullPolicy: Always
+        #   ports:
+        #     - containerPort: 8081
+        #       name: restful-worker
+        #   env:
+        #     - name: WORKER_ENABLE
+        #       value: "true"
+        #     - name: PORT
+        #       value: "8081"
+        #     # 其他环境变量与上面 pod 的一致
+        #     - name: NODE_ENV
+        #       value: development
+        #   readinessProbe:
+        #     httpGet:
+        #       path: "/healthz"
+        #       port: restful-worker
+        #     initialDelaySeconds: 10
+        #     timeoutSeconds: 3
+        #     periodSeconds: 15
+        #     successThreshold: 3
