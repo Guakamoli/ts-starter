@@ -46,14 +46,14 @@ export class MQ {
 
   /**
    * @description 发送RockerMQ消息
-   * @param {Object} body 消息体
+   * @param {string} body 消息体
    * @param {string} tag 消息标签
    * @param {string} messageKey 消息key
    * @param {Object} props 消息属性
    * @param {number} retry 消息重试次数
    * @returns {Promise<void>} result
    */
-  async send(body: any, tag: string, messageKey = '', props = {}, retry = 3) {
+  async send(body: string, tag: string, messageKey = '', props = {}, retry = 3) {
     if (!body) {
       return;
     }

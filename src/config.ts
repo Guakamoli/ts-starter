@@ -15,6 +15,8 @@ export default cleanEnv(
     WORKER_ENABLE: bool({ default: false, devDefault: false }),
     MONGO_URL: str({
       example: 'mongodb://localhost:27017/example',
+      default: 'CHANGEME',
+      devDefault: 'CHANGEME',
     }),
   },
 );
