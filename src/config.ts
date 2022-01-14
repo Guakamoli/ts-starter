@@ -18,8 +18,8 @@ export default cleanEnv(
     MONGO_USE_UNIFIED_TOPOLOGY: bool({ default: true, devDefault: true }),
     MONGO_URL: str({
       example: 'mongodb://localhost:27017/example',
-      default: 'CHANGEME',
-      devDefault: 'CHANGEME',
+      default: '',
+      devDefault: '',
     }),
   },
 );
