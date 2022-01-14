@@ -5,37 +5,56 @@ import {
   CollectionCreateOptions,
   IndexOptions,
 } from 'mongodb';
+import config from '../config';
 
 export { MongoClient, Db, Collection, CollectionCreateOptions, IndexOptions };
 
 const mongoOpts = {
   minPoolSize: 2,
   maxPoolSize: 5,
-  directConnection: true,
-  useUnifiedTopology: true,
+  directConnection: config.MONGO_DIRECT_CONNECTION,
+  useNewUrlParser: config.MONGO_USE_NEW_URL_PARSER,
+  useUnifiedTopology: config.MONGO_USE_UNIFIED_TOPOLOGY,
 };
+
+const mongoInitialConnectRetries = 5;
 
 /**
  * @summary 连接 mongodb
  * @description 部署环境为 k8s，只链接一次，不自动重连，依赖于 k8s 的 pod 维护机制存活
  * @param {string} url mongodb 数据库连接字符串
- * @param {Object} opts mongodb 配置
+ * @param {Object} [opts={}] mongodb 配置
+ * @param {number} [retries=10] 重连次数
  * @returns {Promise<MongoClient>} 返回一个 Promise，如果成功，返回一个 Db 对象，如果失败，返回一个 Error 对象
  */
-export async function connect(
+export async function mongoConnectWithRetry(
   url: string,
-  opts?: Object,
+  opts: Object = {},
+  number: number = 0,
 ): Promise<MongoClient> {
-  return new Promise((resolve, reject) => {
+  if (number > 1) {
+    console.log(
+      `Retrying connect to MongoDB... (${number} of ${mongoInitialConnectRetries})`,
+    );
+  } else {
     console.log('Connecting to MongoDB...');
-    new MongoClient(url, { ...mongoOpts, ...opts }).connect((err, client) => {
-      console.log('Connected to MongoDB.');
-      if (err) {
-        reject(err);
-      }
-      resolve(client as MongoClient);
-    });
-  });
+  }
+
+  let client;
+  try {
+    client = await MongoClient.connect(url, { ...mongoOpts, ...opts });
+    console.log(
+      `Connected to MongoDB. Database name: ${client.db().databaseName}`,
+    );
+  } catch (error: any) {
+    if (error.name === 'MongoNetworkError') {
+      // 如果是网络错误，则重试
+      client = await mongoConnectWithRetry(url, opts, number + 1);
+    } else {
+      throw error;
+    }
+  }
+  return client;
 }
 
 /**

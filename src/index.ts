@@ -2,8 +2,7 @@ import {
   Http,
   Context,
   withContext,
-  connect,
-  MongoClient,
+  mongoConnectWithRetry,
   startup,
 } from './mod';
 import routes from './routes';
@@ -16,7 +15,7 @@ async function runApp() {
   if (config.MONGO_URL) {
     const mongoOpts: Record<string, any> = {};
     if (config.NODE_ENV === 'production') mongoOpts.directConnection = false;
-    ctx.mongo = (await connect(config.MONGO_URL, mongoOpts)) as MongoClient;
+    ctx.mongo = await mongoConnectWithRetry(config.MONGO_URL, mongoOpts);
   }
 
   const http = new Http(config.PORT);
