@@ -4,10 +4,18 @@ import {
   Collection,
   CollectionCreateOptions,
   IndexOptions,
+  ObjectID,
 } from 'mongodb';
 import config from '../config';
 
-export { MongoClient, Db, Collection, CollectionCreateOptions, IndexOptions };
+export {
+  MongoClient,
+  Db,
+  Collection,
+  CollectionCreateOptions,
+  IndexOptions,
+  ObjectID,
+};
 
 const mongoOpts = {
   minPoolSize: 2,

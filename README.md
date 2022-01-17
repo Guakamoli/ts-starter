@@ -12,11 +12,23 @@
 - 集成 **[mongodb](https://github.com/mongodb/node-mongodb-native)** ([document](https://mongodb.github.io/node-mongodb-native/4.2/))
 - 支持构建镜像(优化过大小)
 
+## 可选类库
+
+- 网络请求库 [node-fetch](https://github.com/node-fetch/node-fetch) `npx pnpm add node-fetch@^2.6.6`
+- 模式验证匹配库 [simpl-schema](https://github.com/longshotlabs/simpl-schema) `npx pnpm add simpl-schema`
+- 字符串ID生成器 [nanoid](https://github.com/ai/nanoid) (小巧、快速、安全、URL友好、唯一) `npx pnpm add nanoid`
+
 ## 环境变量
 
 ```bash
+# 自带的一些环境变量
+NODE_ENV=development
 PORT=8080
 HTTP_ENABLE=true
+WORKER_ENABLE=false
+MONGO_DIRECT_CONNECTION=true
+MONGO_USE_NEW_URL_PARSER=true
+MONGO_USE_UNIFIED_TOPOLOGY=true
 MONGO_URL=mongodb://localhost:27017/example
 ```
 
@@ -158,5 +170,34 @@ export default async function workman(ctx: BaseContext) {
       // await mq.send(JSON.stringify({ hello: 'world' }), 'thisTagName', 'thisKey');
     }
   });
+}
+```
+
+### mongodb
+
+使用事务
+
+```js
+async function(ctx) {
+  await ctx.transaction(async (session: ClientSession) => {
+    const result = await ctx.collection('test')
+      .insertOne(
+        { id: 'test-id', createdAt: new Date() },
+        { session }
+      );
+    
+    if (!result.result.ok) {
+        throw new Error('Create address failed');
+    }
+
+    // 主动抛错，将导致写入不成果，最外层的 updateOne 也将会更新出错
+    // throw new Error('Create address failed');
+
+    console.log({ _id: result.insertedId });
+  });
+
+  const result = await ctx.collection('test')
+      .updateOne({ id: 'test-id', updatedAt: new Date() });
+  console.log(result);
 }
 ```

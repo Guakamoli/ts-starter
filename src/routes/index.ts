@@ -18,7 +18,7 @@ router.get('/healthz', async (ctx: Context) => {
     try {
       await ctx.db.collection('test').findOne({});
     } catch (err: any) {
-      return ctx.fail(err);
+      return ctx.fail(err, 500);
     }
   }
   ctx.json({ message: 'ok' });

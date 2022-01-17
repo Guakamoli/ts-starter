@@ -9,7 +9,7 @@ import routes from './routes';
 import config from './config';
 import './startup';
 
-async function runApp() {
+export async function runApp() {
   let ctx = Context();
 
   if (config.MONGO_URL) {
@@ -34,6 +34,3 @@ async function runApp() {
 if (!config.isTest && config.HTTP_ENABLE) {
   runApp().catch(console.error);
 }
-
-// 这是给测试用的
-export const foo = '芜湖~';

@@ -1,4 +1,5 @@
 import crypto from 'crypto';
+import { ObjectID } from '../mod';
 
 /**
  * @description 生成uuid第四版
@@ -21,4 +22,8 @@ export function md5(content: string): string | null {
   if (!content) return null;
   const hash = crypto.createHash('md5');
   return hash.update(content).digest('hex');
+}
+
+export function randomObjectId() {
+  return new ObjectID(Date.now()).toHexString();
 }
