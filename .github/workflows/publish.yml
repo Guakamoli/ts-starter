@@ -1,0 +1,61 @@
+name: publish
+
+on:
+  push:
+    branches:
+      - develop
+      - master
+      - test
+    tags:
+      - "v*"
+
+env:
+  IMAGE_NAME: ts-starter
+  ALIYUN_CR: registry.cn-qingdao.aliyuncs.com
+
+jobs:
+  check-alicr:
+    runs-on: ubuntu-latest
+    outputs:
+      alicr-uid-exist: ${{ steps.alicr-uid-env.outputs.defined }}
+      alicr-pwd-exist: ${{ steps.alicr-pwd-env.outputs.defined }}
+    steps:
+      - id: alicr-uid-env
+        env:
+          ALICR_UID: ${{ secrets.ALICR_UID }}
+        if: "${{ env.ALICR_UID != '' }}"
+        run: echo "::set-output name=defined::true"
+      - id: alicr-pwd-env
+        env:
+          ALICR_PWD: ${{ secrets.ALICR_PWD }}
+        if: "${{ env.ALICR_PWD != '' }}"
+        run: echo "::set-output name=defined::true"
+  build:
+    needs: [check-alicr]
+    if: needs.check-alicr.outputs.alicr-uid-exist == 'true' && needs.check-alicr.outputs.alicr-pwd-exist == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set tag name
+        run: |
+          echo "TAG_NAME=$GITHUB_REF_NAME-${GITHUB_SHA: 0:8}" >> $GITHUB_ENV
+      - name: Login to Aliyun Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ${{ env.ALIYUN_CR }}
+          username: ${{ secrets.ALICR_UID }}
+          password: ${{ secrets.ALICR_PWD }}
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+        with:
+          version: v0.6.0
+      - name: Build Docker image and Publish
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          tags: |
+            ${{env.ALIYUN_CR}}/paiya/${{env.IMAGE_NAME}}:${{env.TAG_NAME}}
+            ${{env.ALIYUN_CR}}/goduck/${{env.IMAGE_NAME}}:${{env.TAG_NAME}}
+          pull: true
+          push: true
+          cache-to: type=gha
+          cache-from: type=gha
