@@ -4,7 +4,9 @@ import {
   Collection,
   CollectionCreateOptions,
   IndexOptions,
+  ObjectId,
   ObjectID,
+  ClientSession,
 } from 'mongodb';
 import config from '../config';
 
@@ -14,7 +16,9 @@ export {
   Collection,
   CollectionCreateOptions,
   IndexOptions,
+  ObjectId,
   ObjectID,
+  ClientSession,
 };
 
 const mongoOpts = {
