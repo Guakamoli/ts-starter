@@ -13,9 +13,7 @@ export async function runApp() {
   let ctx = Context();
 
   if (config.MONGO_URL) {
-    const mongoOpts: Record<string, any> = {};
-    if (config.NODE_ENV === 'production') mongoOpts.directConnection = false;
-    ctx.mongo = await mongoConnectWithRetry(config.MONGO_URL, mongoOpts);
+    ctx.mongo = await mongoConnectWithRetry(config.MONGO_URL);
   }
 
   const http = new Http(config.PORT);
