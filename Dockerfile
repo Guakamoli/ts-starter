@@ -31,9 +31,6 @@ COPY --chown=node:node --from=deps /app/package.json ./
 COPY --chown=node:node --from=deps /app/node_modules ./node_modules
 COPY --chown=node:node --from=gen /app/dist ./dist
 
-# 创建一个占位文件
-RUN touch .env
-
 EXPOSE 8080
 
 # Run the app
