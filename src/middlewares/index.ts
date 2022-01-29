@@ -7,6 +7,7 @@ import etag from 'koa-etag';
 import cors from '@koa/cors';
 import json from 'koa-json';
 import cacheContrl from 'koa-ctx-cache-control';
+import { ping, healthz } from './healthz';
 
 export {
   logger,
@@ -32,6 +33,8 @@ const middlewares = [
   etag(),
   cors(),
   json({ pretty: false, param: 'x-json-pretty' }),
+  ping(),
+  healthz(),
 ];
 
 if (!config.WORKER_ENABLE) {

@@ -16,11 +16,11 @@ export function withContext(obj: object = {}) {
         try {
           response = await callback(session);
           await session.commitTransaction();
-          await session.endSession();
         } catch (err: any) {
           await session.abortTransaction();
-          await session.endSession();
           throw err;
+        } finally {
+          await session.endSession();
         }
         return response;
       };
