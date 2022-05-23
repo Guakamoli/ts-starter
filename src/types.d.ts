@@ -12,6 +12,10 @@ export type MQOptions = {
   accessKeySecret: string;
   endpoint: string;
   instanceId: string;
+  topics: Array<Topic>;
+};
+
+export type Topic = {
   topicId: string;
   groupId: string;
 };

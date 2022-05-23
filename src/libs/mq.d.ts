@@ -1,3 +1,4 @@
+import { MQOptions, Topic } from '../types';
 declare module '@aliyunmq/mq-http-sdk' {
   export function MQConsumer();
   export function MessageProperties();
@@ -10,15 +11,16 @@ declare module '@aliyunmq/mq-http-sdk' {
 
 declare class MQ {
   instanceId: string;
-  topicId: string;
-  groupId: string;
+  topics: Array<Topic>;
 
   client: any;
-  consumer: any;
+  consumers: Map<string, any>;
 
-  constructor();
+  constructor(options: MQOptions);
   genRocketmqMsgProps(key: string, props: Object): Object;
+  getConsumer(topicId: string): any;
   send(
+    topic: string,
     body: any,
     tag: string,
     messageKey: string,
