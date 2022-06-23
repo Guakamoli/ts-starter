@@ -1,28 +1,28 @@
-import { BaseContext } from '../types';
+import { BaseContext, Callback } from '../types';
 
-function initStartup(this: any) {
-  const startup = new Map();
+class Startup {
+  #stack: Map<string, Callback>;
 
-  this.run = async function (ctx: BaseContext) {
-    for (const [name, fn] of startup) {
+  constructor() {
+    this.#stack = new Map();
+  }
+
+  async run(ctx: BaseContext) {
+    for (const [name, fn] of this.#stack) {
       console.log(`Running startup function "${name}"`);
       await fn(ctx);
     }
-  };
+  }
 
-  this.set = async function (name: string, callback: any) {
-    if (!startup.has(name)) {
-      startup.set(name, callback);
+  set(name: string, callback: any) {
+    if (!this.#stack.has(name)) {
+      this.#stack.set(name, callback);
     } else {
       console.warn(`A startup with the same name exists. name: "${name}"`);
     }
-  };
+  }
 
-  this.clear = async function () {
-    startup.clear();
-  };
-
-  return this;
+  clear = () => this.#stack.clear();
 }
 
-export default initStartup();
+export const startup = new Startup();

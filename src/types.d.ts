@@ -49,3 +49,10 @@ export interface Pagination {
   sortBy?: string;
   query?: Record<string>;
 }
+
+export interface FetchOptions {
+  internal?: boolean;
+  output?: 'json' | 'text';
+}
+
+export type Callback = (...args: any[]) => any;

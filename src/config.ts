@@ -22,5 +22,10 @@ export default cleanEnv(
       default: '',
       devDefault: '',
     }),
+    INTERNAL_X_SECRET: str({
+      default: '',
+      devDefault: '',
+      desc: 'rocketchat内部访问密钥',
+    }),
   },
 );
