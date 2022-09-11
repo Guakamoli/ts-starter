@@ -56,7 +56,6 @@ jobs:
         with:
           tags: |
             ${{env.ALIYUN_CR}}/paiya/${{env.IMAGE_NAME}}:${{env.TAG_NAME}}
-            ${{env.ALIYUN_CR}}/goduck/${{env.IMAGE_NAME}}:${{env.TAG_NAME}}
           pull: true
           push: true
           cache-to: type=gha
