@@ -9,6 +9,13 @@ import routes from './routes';
 import config from './config';
 import './startup';
 
+async function exit(ctx: any, code = 0) {
+  if (ctx.mongo) {
+    await ctx.mongo.close();
+  }
+  process.exit(code);
+}
+
 export async function runApp() {
   let ctx = Context();
 
@@ -16,19 +23,22 @@ export async function runApp() {
     ctx.mongo = await mongoConnectWithRetry(config.MONGO_URL);
   }
 
-  const http = new Http(config.PORT);
-  http.withRouter(routes);
+  ctx = withContext({ ...ctx });
 
-  ctx = withContext({
-    ...ctx,
-    http,
-  });
+  try {
+    await startup.run(ctx);
+  } catch {
+    await exit(1);
+    return;
+  }
 
-  await startup.run(ctx);
-
-  http.start(ctx);
+  if (config.HTTP_ENABLE) {
+    const http = new Http(config.PORT);
+    http.withRouter(routes);
+    await http.start(ctx);
+  }
 }
 
-if (!config.isTest && config.HTTP_ENABLE) {
+if (!config.isTest) {
   runApp().catch(console.error);
 }

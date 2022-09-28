@@ -86,3 +86,46 @@ const result = await callbacks.run('事件名称', true, '2', 3);
 console.log(result);
 // output: "第二个callback"
 ```
+
+## cache.ts
+
+> 使用前请 `pnpm add redis@4`
+> 在 `mod.ts` 中解开注释
+
+### 内存缓存
+
+```js
+// 写入内存缓存。ttl默认60s后过期
+memoryCache.addValue('some_1', '12345678');
+
+// 读取缓存
+memoryCache.getValue('some_1');
+// output: "12345678"
+
+// 检查缓存过期
+memoryCache.hasExpired('some_1');
+// output: false
+
+// 过 60s 后
+memoryCache.getValue('some_1');
+// output: undefined
+
+memoryCache.hasExpired('some_1');
+// output: true
+
+// 设置缓存存活时间的演示
+// 添加缓存，10s 后过期
+memoryCache.addValue('some_2', '87654321', 10);
+
+// 删除缓存
+memoryCache.deleteValue('some_2');
+// output: "87654321"
+
+// 读取缓存
+memoryCache.getValue('some_2');
+// output: undefined
+```
+
+### redis
+
+与内存缓存类似

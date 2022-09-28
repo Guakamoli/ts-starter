@@ -56,3 +56,10 @@ export interface FetchOptions {
 }
 
 export type Callback = (...args: any[]) => any;
+
+export interface Cache {
+  addValue(key: any, value: any, ttl?: number): void | Promise<void>;
+  getValue(key: any): Promise<T>;
+  hasExpired(key: string): boolean | Promise<boolean>;
+  deleteValue(key: string): T | Promise<T>;
+}
