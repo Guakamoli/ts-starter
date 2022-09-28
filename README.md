@@ -6,7 +6,7 @@
 
 ## 特性
 
-- 更快更安全的包管理器 **[pnpm](https://github.com/pnpm/pnpm)**
+- 更快更安全的包管理器 **[pnpm](https://github.com/pnpm/pnpm)** `npm i -g pnpm`
 - 打包 **[tsup](https://github.com/egoist/tsup)**
 - 测试 **[uvu](https://github.com/lukeed/uvu)**
 - 集成 **[mongodb](https://github.com/mongodb/node-mongodb-native)** ([document](https://mongodb.github.io/node-mongodb-native/4.2/))
@@ -14,9 +14,9 @@
 
 ## 可选类库
 
-- 网络请求库 [node-fetch](https://github.com/node-fetch/node-fetch) `npx pnpm add node-fetch@^2.6.6`
-- 模式验证匹配库 [simpl-schema](https://github.com/longshotlabs/simpl-schema) `npx pnpm add simpl-schema`
-- 字符串ID生成器 [nanoid](https://github.com/ai/nanoid) (小巧、快速、安全、URL友好、唯一) `npx pnpm add nanoid`
+- 网络请求库 [node-fetch](https://github.com/node-fetch/node-fetch) `pnpm add node-fetch@^2.6.6` and `pnpm add -D @types/node-fetch`
+- 模式验证匹配库 [simpl-schema](https://github.com/longshotlabs/simpl-schema) `pnpm add simpl-schema`
+- 字符串ID生成器 [nanoid](https://github.com/ai/nanoid) (小巧、快速、安全、URL友好、唯一) `pnpm add nanoid`
 
 ## 环境变量
 

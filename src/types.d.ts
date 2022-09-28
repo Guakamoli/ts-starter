@@ -53,6 +53,7 @@ export interface Pagination {
 export interface FetchOptions {
   internal?: boolean;
   output?: 'json' | 'text';
+  interceptor?: boolean;
 }
 
 export type Callback = (...args: any[]) => any;

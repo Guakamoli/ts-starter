@@ -14,6 +14,7 @@ export async function fetch(url: string, init?: RequestInit & FetchOptions) {
     headers = {},
     output = 'json',
     internal = false,
+    interceptor = true
   } = init || {};
 
   const response = await _fetch(url, {
@@ -26,7 +27,7 @@ export async function fetch(url: string, init?: RequestInit & FetchOptions) {
     body,
   });
 
-  if (!response.ok)
+  if (!response.ok && interceptor)
     throw new Error(`HTTP Request faild status: ${response.status}`);
 
   if (output !== 'json') {
