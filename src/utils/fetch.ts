@@ -1,16 +1,13 @@
 import _fetch, { RequestInit } from 'node-fetch';
 import config from '../config';
-import { User, FetchOptions } from '../types';
+import { FetchOptions } from '../types';
 
 export async function fetch(url: string): Promise<any>;
 export async function fetch(
   url: string,
   init: RequestInit & FetchOptions,
 ): Promise<any>;
-export async function fetch(
-  url: string,
-  init: (RequestInit & FetchOptions) | void,
-) {
+export async function fetch(url: string, init?: RequestInit & FetchOptions) {
   const {
     method = 'GET',
     body,
