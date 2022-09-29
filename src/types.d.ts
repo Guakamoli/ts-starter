@@ -64,3 +64,8 @@ export interface Cache {
   hasExpired(key: string): boolean | Promise<boolean>;
   deleteValue(key: string): T | Promise<T>;
 }
+
+export type RetryCallbackOptions = {
+  retry?: number;
+  wait?: number;
+}
