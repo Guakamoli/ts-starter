@@ -23,12 +23,12 @@ jobs:
         env:
           ALICR_UID: ${{ secrets.ALICR_UID }}
         if: "${{ env.ALICR_UID != '' }}"
-        run: echo "::set-output name=defined::true"
+        run: echo "defined=true" >> $GITHUB_OUTPUT
       - id: alicr-pwd-env
         env:
           ALICR_PWD: ${{ secrets.ALICR_PWD }}
         if: "${{ env.ALICR_PWD != '' }}"
-        run: echo "::set-output name=defined::true"
+        run: echo "defined=true" >> $GITHUB_OUTPUT
   build:
     needs: [check-alicr]
     if: needs.check-alicr.outputs.alicr-uid-exist == 'true' && needs.check-alicr.outputs.alicr-pwd-exist == 'true'
