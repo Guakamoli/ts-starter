@@ -14,7 +14,7 @@ env:
 
 jobs:
   check-alicr:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     outputs:
       alicr-uid-exist: ${{ steps.alicr-uid-env.outputs.defined }}
       alicr-pwd-exist: ${{ steps.alicr-pwd-env.outputs.defined }}
@@ -32,7 +32,7 @@ jobs:
   build:
     needs: [check-alicr]
     if: needs.check-alicr.outputs.alicr-uid-exist == 'true' && needs.check-alicr.outputs.alicr-pwd-exist == 'true'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Set tag name
         run: |
@@ -41,18 +41,16 @@ jobs:
             echo "TAG_NAME=dev" >> $GITHUB_ENV
           fi
       - name: Login to Aliyun Container Registry
-        uses: docker/login-action@v1
+        uses: docker/login-action@v2
         with:
           registry: ${{ env.ALIYUN_CR }}
           username: ${{ secrets.ALICR_UID }}
           password: ${{ secrets.ALICR_PWD }}
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-        with:
-          version: v0.6.0
+        uses: docker/setup-buildx-action@v2
       - name: Build Docker image and Publish
         id: docker_build
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v3
         with:
           tags: |
             ${{env.ALIYUN_CR}}/paiya/${{env.IMAGE_NAME}}:${{env.TAG_NAME}}
