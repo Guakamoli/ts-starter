@@ -80,3 +80,52 @@ spec:
         #     timeoutSeconds: 3
         #     periodSeconds: 15
         #     successThreshold: 3
+
+# 也可以拆分为独立的 Deployment 运行
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: develop
+  name: ts-starter-worker-deployment
+  labels:
+    component: ts-starter-worker
+spec:
+  selector:
+    matchLabels:
+      component: ts-starter-worker
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        component: ts-starter-worker
+    spec:
+      containers:
+        - name: worker
+          image: ts-starter:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              name: restful
+          env:
+            - name: WORKER_ENABLE
+              value: "true"
+            # 其他环境变量与上面 pod 的一致
+            - name: NODE_ENV
+              value: development
+          livenessProbe:
+            httpGet:
+              path: "/ping"
+              port: restful # 使用命名的端口
+            initialDelaySeconds: 5
+            failureThreshold: 2 # 连续探测失败2次才算成功
+            timeoutSeconds: 3
+            periodSeconds: 15
+          readinessProbe:
+            httpGet:
+              path: "/healthz"
+              port: restful
+            initialDelaySeconds: 10
+            timeoutSeconds: 3
+            periodSeconds: 15 # 探测频率15秒
+            successThreshold: 3 # 连续探测成功3次才算成功
