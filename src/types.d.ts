@@ -7,12 +7,15 @@ export interface BaseContext extends Record<T> {
 
 export type HttpMethod = 'all' | 'get' | 'post' | 'put' | 'del';
 
+export type MQRegionID = 'cn-shanghai' | 'cn-beijing' | 'cn-hangzhou' | 'ap-southeast-1' | 'ap-northeast-1' | 'ap-south-1';
+
 export type MQOptions = {
   accessKeyId: string;
   accessKeySecret: string;
   endpoint: string;
   instanceId: string;
   topics: Array<Topic>;
+  regionId: MQRegionID;
 };
 
 export type Topic = {

@@ -21,7 +21,7 @@ console.log(ctx);
 
 ## mq.ts
 
-> 使用前请 `pnpm add @aliyunmq/mq-http-sdk`
+> 使用前请 `pnpm add @aliyunmq/mq-http-sdk @alicloud/ons20190214 @alicloud/openapi-client`
 > 在 `mod.ts` 中解开注释
 
 ```bash

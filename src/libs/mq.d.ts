@@ -19,6 +19,8 @@ declare class MQ {
   constructor(options: MQOptions);
   genRocketmqMsgProps(key: string, props: Object): Object;
   getConsumer(topicId: string): any;
+  createGroup(groupId: string): Promise<void>;
+  getConsumerShard(topicId: string, groupId: string, count: number): Promise<{ consumer: MQConsumer, groupId: string }[]>;
   send(
     topic: string,
     body: any,
