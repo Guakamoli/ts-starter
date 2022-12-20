@@ -6,6 +6,7 @@ const result = dotenv.config();
 export default cleanEnv(
   { ...(result.parsed || {}), ...process.env },
   {
+    NAME: str({ default: 'ts-starter', devDefault: 'ts-starter' }),
     NODE_ENV: str({
       choices: ['test', 'development', 'production', 'stag'],
       default: 'production',
