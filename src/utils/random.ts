@@ -1,5 +1,5 @@
 import crypto from 'crypto';
-import { ObjectID } from '../mod';
+import mongodb from 'mongodb';
 
 /**
  * @description 生成uuid第四版
@@ -25,5 +25,5 @@ export function md5(content: string): string | null {
 }
 
 export function randomObjectId() {
-  return new ObjectID(Date.now()).toHexString();
+  return new mongodb.ObjectID(Date.now()).toHexString();
 }

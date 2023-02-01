@@ -1,5 +1,6 @@
-import { Db, Collection, collectionIndex } from '../mod';
+import { collectionIndex } from '../mod';
 import { BaseContext, BaseCollectionIndex } from '../types';
+import mongodb from 'mongodb';
 
 const collections: BaseCollectionIndex[] = [
   // {
@@ -15,17 +16,20 @@ const collections: BaseCollectionIndex[] = [
 ];
 
 const getCollectionPromise = (
-  db: Db,
+  db: mongodb.Db,
   collectionConfig: BaseCollectionIndex,
 ) => {
   return new Promise((resolve, reject) => {
     db.collection(
       collectionConfig.name,
       { strict: true },
-      (error: any, collection: Collection) => {
+      (error: any, collection: mongodb.Collection) => {
         if (error) {
-          db.createCollection(collectionConfig.name, collectionConfig.options)
-            .then((newCollection: Collection) => {
+          db.createCollection(
+            collectionConfig.name,
+            collectionConfig.options as mongodb.CollectionCreateOptions,
+          )
+            .then((newCollection: mongodb.Collection) => {
               resolve(newCollection);
             })
             .catch(reject);
@@ -46,11 +50,11 @@ const getCollectionPromise = (
 
 export default async function createCollections(ctx: BaseContext) {
   for (const collectionConfig of collections) {
-    const db = ctx.db as Db;
+    const db = ctx.db as mongodb.Db;
     const collection = (await getCollectionPromise(
       db,
       collectionConfig,
-    )) as Collection;
+    )) as mongodb.Collection;
 
     if (Array.isArray(collectionConfig.indexes)) {
       const indexingPromises = collectionConfig.indexes.map((indexArgs: any) =>
@@ -59,4 +63,4 @@ export default async function createCollections(ctx: BaseContext) {
       await Promise.all(indexingPromises);
     }
   }
-};
+}

@@ -1,25 +1,7 @@
-import {
-  MongoClient,
-  Db,
-  Collection,
-  CollectionCreateOptions,
-  IndexOptions,
-  ObjectId,
-  ObjectID,
-  ClientSession,
-} from 'mongodb';
+import mongodb, { Collection, IndexOptions } from 'mongodb';
 import config from '../config';
 
-export {
-  MongoClient,
-  Db,
-  Collection,
-  CollectionCreateOptions,
-  IndexOptions,
-  ObjectId,
-  ObjectID,
-  ClientSession,
-};
+const { MongoClient } = mongodb;
 
 const mongoOpts = {
   minPoolSize: 2,
@@ -43,7 +25,7 @@ export async function mongoConnectWithRetry(
   url: string,
   opts: Object = {},
   number: number = 0,
-): Promise<MongoClient> {
+): Promise<mongodb.MongoClient> {
   if (number > 1) {
     console.log(
       `Retrying connect to MongoDB... (${number} of ${mongoInitialConnectRetries})`,
