@@ -61,7 +61,7 @@ export async function mongoConnectWithRetry(
   } catch (error: any) {
     if (error.name === 'MongoNetworkError') {
       // 如果是网络错误，则重试
-      client = await mongoConnectWithRetry(url, opts, number + 1);
+      client = await mongoConnectWithRetry(url, { ...mongoOpts, ...opts }, number + 1);
     } else {
       throw error;
     }
