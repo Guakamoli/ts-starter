@@ -1,3 +1,4 @@
+import process from 'node:process';
 import {
   Http,
   Context,
@@ -38,6 +39,16 @@ export async function runApp() {
     await http.start(ctx);
   }
 }
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.log(
+    'Oops! Something went wrong.',
+    'Unhandled Rejection at:',
+    promise,
+    'reason:',
+    reason,
+  );
+});
 
 if (!config.isTest) {
   runApp().catch(console.error);
